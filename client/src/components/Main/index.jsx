@@ -1,5 +1,6 @@
 import { useState, useEffect} from 'react';
 import styles from "./styles.module.css";
+import Canvas from '../Canvas'
 
 const Main = () => {
 	const [user, setUser] = useState("");
@@ -30,6 +31,7 @@ const Main = () => {
 					Logout
 				</button>
 			</nav>
+			<Canvas/>
 		</div>
 	);
 };
