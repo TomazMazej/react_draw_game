@@ -19,10 +19,19 @@ app.use("/api/auth", authRoutes);
 
 // Requests
 const Users = require('./models/user')
-app.get('/users', async (req, res) => {
-    const lists = await Users.User.find();
 
-    res.json(lists);
+// Dobimo vse uporabnike
+app.get('/users', async (req, res) => {
+    const users = await Users.User.find();
+
+    res.json(users);
+})
+
+// Dobimo ime uporabnika glede na email
+app.get('/users/:e', async (req, res) => {
+    const user = await Users.User.findOne({ email: req.params.e });
+
+    res.json(user);
 })
 
 const port = process.env.PORT || 8080;

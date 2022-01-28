@@ -9,6 +9,7 @@ const Login = () => {
 
 	const handleChange = ({ currentTarget: input }) => {
 		setData({ ...data, [input.name]: input.value });
+		localStorage.setItem("email", data.email);
 	};
 
 	const handleSubmit = async (e) => {
