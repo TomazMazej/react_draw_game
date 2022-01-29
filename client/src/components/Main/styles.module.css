@@ -25,3 +25,8 @@
 	cursor: pointer;
 	margin-right: 20px;
 }
+
+.rowC{
+	display:flex; 
+	flex-direction:row;
+}

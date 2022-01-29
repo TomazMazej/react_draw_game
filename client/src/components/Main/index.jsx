@@ -1,6 +1,7 @@
 import { useState, useEffect} from 'react';
 import styles from "./styles.module.css";
 import Canvas from '../Canvas'
+import Chat from '../Chat'
 
 const Main = () => {
 	const [user, setUser] = useState("");
@@ -15,7 +16,9 @@ const Main = () => {
 		  .then(res => res.json())
 		  .then(data => setUser(data))
 		  .then(err => console.error("Error: ", err));
-	  }
+	}
+
+	localStorage.setItem("username", user.firstName);
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -31,7 +34,8 @@ const Main = () => {
 					Logout
 				</button>
 			</nav>
-			<Canvas/>
+			<Canvas />
+			<Chat />
 		</div>
 	);
 };

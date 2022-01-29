@@ -1,10 +1,25 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./styles.module.css";
+import io from "socket.io-client"
 
 const Canvas = () => {
     const [isDrawing, setIsDrawing] = useState(false)
     const canvasRef = useRef(null);
     const contextRef = useRef(null);
+
+    /*const socketRef = useRef()
+
+    useEffect(
+		() => {
+			socketRef.current = io.connect("http://localhost:8080")
+			socketRef.current.on("draw", ({ canvasRef, contextRef }) => {
+				this.canvasRef = canvasRef
+                this.contextRef = contextRef
+			})
+			return () => socketRef.current.disconnect()
+		},
+		[ canvasRef ]
+	)*/
 
     useEffect(() => {
         const canvas = canvasRef.current;

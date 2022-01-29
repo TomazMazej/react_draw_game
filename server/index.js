@@ -2,9 +2,21 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, { cors: {origin:'*'}});
 const connection = require("./db");
 const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
+
+// Socket.io
+io.on('connection', socket => {
+    socket.on('message', ({ name, message }) => {
+        io.emit('message', { name, message })
+    })
+    socket.on('draw', ({ canvasRef, contextRef }) => {
+        io.emit('draw', { canvasRef, contextRef })
+    })
+});
 
 // Database connection
 connection();
@@ -35,4 +47,4 @@ app.get('/users/:e', async (req, res) => {
 })
 
 const port = process.env.PORT || 8080;
-app.listen(port, console.log(`Listening on port ${port}...`));
+http.listen(port, console.log(`Listening on port ${port}...`));
