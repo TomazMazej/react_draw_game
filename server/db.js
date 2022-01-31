@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Povezava na bazo
 module.exports = () => {
 	const connectionParams = {
 		useNewUrlParser: true,

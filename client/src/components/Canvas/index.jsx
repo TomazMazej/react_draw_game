@@ -7,33 +7,34 @@ const Canvas = () => {
     const canvasRef = useRef(null);
     const contextRef = useRef(null);
 
-    /*const socketRef = useRef()
-
-    useEffect(
-		() => {
-			socketRef.current = io.connect("http://localhost:8080")
-			socketRef.current.on("draw", ({ canvasRef, contextRef }) => {
-				this.canvasRef = canvasRef
-                this.contextRef = contextRef
-			})
-			return () => socketRef.current.disconnect()
-		},
-		[ canvasRef ]
-	)*/
+    const socketRef = useRef()
 
     useEffect(() => {
+        // Nastavitve canvasa
         const canvas = canvasRef.current;
-        canvas.width = window.innerWidth * 2;
-        canvas.height = window.innerHeight * 2;
+        canvas.width = window.innerWidth ;
+        canvas.height = window.innerHeight;
         canvas.style.width = `${window.innerWidth}px`;
         canvas.style.height = `${window.innerHeight}px`;
 
         const context = canvas.getContext("2d")
-        context.scale(2, 2);
         context.lineCap = "round";
         context.strokeStyle = "black";
         context.lineWidth = 5;
         contextRef.current = context;
+
+        // Sprejmemo poslan canvas
+        socketRef.current = io.connect("http://localhost:8080")
+			socketRef.current.on("canvas-data", (data) => {
+                if(isDrawing) return;
+                var image = new Image();
+                image.onload = function() {
+                    context.drawImage(image, 0, 0);
+                    setIsDrawing(false);
+                };
+                image.src = data;
+			})
+			return () => socketRef.current.disconnect()
     }, []);
 
     const startDrawing = ({ nativeEvent }) => {
@@ -46,11 +47,14 @@ const Canvas = () => {
     const finishDrawing = () => {
         contextRef.current.closePath();
         setIsDrawing(false);
+        // Poljemo canvas ostalim
+        var base64ImageData = canvasRef.current.toDataURL("image/png");
+        socketRef.current.emit("canvas-data", base64ImageData);
     };
 
     const draw = ({ nativeEvent }) => {
         if (!isDrawing) {
-        return;
+            return;
         }
         const { offsetX, offsetY } = nativeEvent;
         contextRef.current.lineTo(offsetX, offsetY);

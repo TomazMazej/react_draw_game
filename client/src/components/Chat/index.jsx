@@ -10,6 +10,7 @@ const Chat = () => {
 
 	const socketRef = useRef()
 
+	// Sprejmemo sporočio
 	useEffect(
 		() => {
 			socketRef.current = io.connect("http://localhost:8080")
@@ -27,6 +28,7 @@ const Chat = () => {
 
 	const onMessageSubmit = (e) => {
 		const { name, message } = state
+		// Pošljemo sporočilo
 		socketRef.current.emit("message", { name, message })
 		e.preventDefault()
 		setState({ message: "", name })

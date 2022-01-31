@@ -27,6 +27,7 @@ router.post("/", async (req, res) => {
 	}
 });
 
+// Validiramo podatke
 const validate = (data) => {
 	const schema = Joi.object({
 		email: Joi.string().email().required().label("Email"),

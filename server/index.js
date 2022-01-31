@@ -11,10 +11,11 @@ const authRoutes = require("./routes/auth");
 // Socket.io
 io.on('connection', socket => {
     socket.on('message', ({ name, message }) => {
-        io.emit('message', { name, message })
+        io.emit('message', { name, message });
     })
-    socket.on('draw', ({ canvasRef, contextRef }) => {
-        io.emit('draw', { canvasRef, contextRef })
+
+    socket.on('canvas-data', (data) => {
+        io.emit('canvas-data', data);
     })
 });
 
