@@ -1,0 +1,53 @@
+:root {
+	--primary: #000000;
+	--secondary: #000000;
+	--light: rgb(255, 255, 255);
+	--light-alt: #99baf5;
+	--dark: #000000;
+	--dark-alt: #000000;
+}
+
+* {
+	margin: 5;
+	padding: 5;
+	box-sizing: border-box;
+
+	font-family: "Fira Sans", sans-serif;
+}
+
+.todo {
+	position: relative;
+	background-color: var(--dark);
+	padding: 16px;
+	border-radius: 16px;
+	display: flex;
+	align-items: center;
+	transition: 0.5s;
+	cursor: pointer;
+	margin-bottom: 16px;
+}
+
+.todo:hover {
+	opacity: 0.8;
+}
+
+.todo .text {
+	font-size: 20px;
+    color: white;
+}
+
+.todo .delete_todo {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 16px;
+	color: var(--light);
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background-color: #AF1E2D;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+}

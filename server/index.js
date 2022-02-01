@@ -7,15 +7,70 @@ const io = require('socket.io')(http, { cors: {origin:'*'}});
 const connection = require("./db");
 const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
+const room = require('./models/room');
+const { addUser, removeUser, getUser, getUsersInRoom } = require("./UserRoom");
 
 // Socket.io
 io.on('connection', socket => {
-    socket.on('message', ({ name, message }) => {
-        io.emit('message', { name, message });
-    })
-
+    console.log(`${socket.id}, has joined`)
+    // Pošiljanje canvasa pri risanju
     socket.on('canvas-data', (data) => {
         io.emit('canvas-data', data);
+    })
+
+    // Pridružitev v chat
+    socket.on('join', ({ name, room }, callback) => {
+        const { error, user } = addUser(
+            { id: socket.id, name, room });
+ 
+        if (error) return callback(error);
+ 
+        // Emit will send message to the user
+        // who had joined
+        socket.emit('message', { name: 'admin', message:
+            `${user.name},
+            welcome to room with id: ${user.room}.` });
+ 
+        // Broadcast will send message to everyone
+        // in the room except the joined user
+        socket.broadcast.to(user.room)
+            .emit('message', { name: "admin",
+            message: `${user.name}, has joined` });
+ 
+        socket.join(user.room);
+ 
+        io.to(user.room).emit('roomData', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        });
+        callback();
+    })
+
+    // Pošiljanje sporočila
+    socket.on('message', ({ name, message }) => {
+        const user = getUser(socket.id);
+        io.to(user.room).emit('message',
+            { name: user.name, message: message });
+ 
+        io.to(user.room).emit('roomData', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        });
+    })
+
+    // Disconect
+    socket.on('disconnect', () => {
+        console.log(`${socket.id}, has disconected`)
+        const user = removeUser(socket.id);
+        if (user) {
+            io.to(user.room).emit('message',{ name: 'admin', message:
+            `${user.name} had left` });
+
+            io.to(user.room).emit('roomData', {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            });
+        }
     })
 });
 
@@ -45,6 +100,31 @@ app.get('/users/:e', async (req, res) => {
     const user = await Users.User.findOne({ email: req.params.e });
 
     res.json(user);
+})
+
+// Dobimo vse sobe
+app.get('/rooms', async (req, res) => {
+    const rooms = await room.find();
+
+    res.json(rooms);
+})
+
+// Dodamo sobo
+app.post('/room/new', (req, res) => {
+    const r = new room({
+        name: req.body.name
+    })
+
+    r.save();
+
+    res.json(r);
+})
+
+// Izbrisemo sobo
+app.delete('/room/delete/:id', async (req, res) => {
+    const result = await room.findByIdAndDelete(req.params.id);
+
+    res.json(result);
 })
 
 const port = process.env.PORT || 8080;

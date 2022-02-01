@@ -1,23 +1,18 @@
 import TextField from "@material-ui/core/TextField"
 import React, { useEffect, useRef, useState } from "react"
-import io from "socket.io-client"
 import styles from "./styles.module.css";
 
-const Chat = () => {
+const Chat = ({socket}) => {
     const [ state, setState ] = useState({ message: "", name: "" })
 	const [ chat, setChat ] = useState([])
     state.name = localStorage.getItem("username");
 
-	const socketRef = useRef()
-
 	// Sprejmemo sporočio
 	useEffect(
 		() => {
-			socketRef.current = io.connect("http://localhost:8080")
-			socketRef.current.on("message", ({ name, message }) => {
+			socket.on("message", ({ name, message }) => {
 				setChat([ ...chat, { name, message } ])
 			})
-			return () => socketRef.current.disconnect()
 		},
 		[ chat ]
 	)
@@ -29,7 +24,7 @@ const Chat = () => {
 	const onMessageSubmit = (e) => {
 		const { name, message } = state
 		// Pošljemo sporočilo
-		socketRef.current.emit("message", { name, message })
+		socket.emit("message", { name, message })
 		e.preventDefault()
 		setState({ message: "", name })
 	}
@@ -61,7 +56,6 @@ const Chat = () => {
 					/>
                     <button className={styles.chat_button} type="submit">Send Message</button>
 				</div>
-				
 			</form>	
 		</div>
 	)
