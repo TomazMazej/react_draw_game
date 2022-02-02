@@ -2,12 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from "./styles.module.css";
 import io from "socket.io-client"
 
-const Canvas = () => {
+const Canvas = ({socket}) => {
     const [isDrawing, setIsDrawing] = useState(false)
     const canvasRef = useRef(null);
     const contextRef = useRef(null);
-
-    const socketRef = useRef()
 
     useEffect(() => {
         // Nastavitve canvasa
@@ -24,8 +22,7 @@ const Canvas = () => {
         contextRef.current = context;
 
         // Sprejmemo poslan canvas
-        socketRef.current = io.connect("http://localhost:8080")
-			socketRef.current.on("canvas-data", (data) => {
+		socket.on("canvas-data", (data) => {
                 if(isDrawing) return;
                 var image = new Image();
                 image.onload = function() {
@@ -34,7 +31,7 @@ const Canvas = () => {
                 };
                 image.src = data;
 			})
-			return () => socketRef.current.disconnect()
+			return () => socket.disconnect()
     }, []);
 
     const startDrawing = ({ nativeEvent }) => {
@@ -49,7 +46,7 @@ const Canvas = () => {
         setIsDrawing(false);
         // Poljemo canvas ostalim
         var base64ImageData = canvasRef.current.toDataURL("image/png");
-        socketRef.current.emit("canvas-data", base64ImageData);
+        socket.emit("canvas-data", base64ImageData);
     };
 
     const draw = ({ nativeEvent }) => {

@@ -5,10 +5,10 @@ import styles from "./styles.module.css";
 const InfoBar = ({ room }) => (
   <div className={styles.infoBar}>
     <div className={styles.leftInnerContainer}>
-      <h3>Room ID: {room}</h3>
+      <h2>Room ID: {room}</h2>
     </div>
     <div className={styles.rightInnerContainer}>
-      <a href="/">Leave</a>
+      <a className={styles.black_btn} href="/">Leave</a>
     </div>
   </div>
 );

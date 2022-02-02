@@ -12,7 +12,6 @@ const { addUser, removeUser, getUser, getUsersInRoom } = require("./UserRoom");
 
 // Socket.io
 io.on('connection', socket => {
-    console.log(`${socket.id}, has joined`)
     // Pošiljanje canvasa pri risanju
     socket.on('canvas-data', (data) => {
         io.emit('canvas-data', data);
@@ -25,14 +24,12 @@ io.on('connection', socket => {
  
         if (error) return callback(error);
  
-        // Emit will send message to the user
-        // who had joined
+        // Emit will send message to the user who had joined
         socket.emit('message', { name: 'admin', message:
             `${user.name},
             welcome to room with id: ${user.room}.` });
  
-        // Broadcast will send message to everyone
-        // in the room except the joined user
+        // Broadcast will send message to everyone in the room except the joined user
         socket.broadcast.to(user.room)
             .emit('message', { name: "admin",
             message: `${user.name}, has joined` });
@@ -50,17 +47,24 @@ io.on('connection', socket => {
     socket.on('message', ({ name, message }) => {
         const user = getUser(socket.id);
         io.to(user.room).emit('message',
-            { name: user.name, message: message });
- 
-        io.to(user.room).emit('roomData', {
-            room: user.room,
-            users: getUsersInRoom(user.room)
-        });
+            { name: name, message: message });
+    })
+
+    // Začetek igre
+    socket.on('start', ( { user } ) => {
+        io.to(user.room).emit('start', {});
+        io.to(user.room).emit('message', { name: 'admin', message:
+        `The game has started!`});
+    })
+
+    // Poteza
+    socket.on('turn', ( { word, user } ) => {    
+        io.to(user.id).emit('message', { name: 'admin', message:
+        `Draw a ${word}!`});
     })
 
     // Disconect
     socket.on('disconnect', () => {
-        console.log(`${socket.id}, has disconected`)
         const user = removeUser(socket.id);
         if (user) {
             io.to(user.room).emit('message',{ name: 'admin', message:

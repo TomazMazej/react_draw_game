@@ -13,8 +13,7 @@ const Chat = ({socket}) => {
 			socket.on("message", ({ name, message }) => {
 				setChat([ ...chat, { name, message } ])
 			})
-		},
-		[ chat ]
+		},[chat]
 	)
 
 	const onTextChange = (e) => {
