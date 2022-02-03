@@ -51,16 +51,29 @@ io.on('connection', socket => {
     })
 
     // Začetek igre
-    socket.on('start', ( { user } ) => {
-        io.to(user.room).emit('start', {});
-        io.to(user.room).emit('message', { name: 'admin', message:
+    socket.on('start', ( { master } ) => {
+        io.to(master.room).emit('start', {});
+        io.to(master.room).emit('message', { name: 'admin', message:
         `The game has started!`});
+        io.to(master.id).emit('next', {});
+    })
+
+    // Naslednji igralec
+    socket.on('next', ( { master } ) => {
+        io.to(master.id).emit('next', {});
     })
 
     // Poteza
     socket.on('turn', ( { word, user } ) => {    
         io.to(user.id).emit('message', { name: 'admin', message:
         `Draw a ${word}!`});
+    })
+
+    // Konec igre
+    socket.on('end', ( { master } ) => {
+        socket.emit("message", { name: 'admin', message: `The game is over!` })
+        io.to(master.room).emit('end', {});
+  
     })
 
     // Disconect

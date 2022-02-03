@@ -12,11 +12,14 @@ const Room = () => {
     const [users, setUsers] = useState('');
     const [players, setPlayers] = useState('');
     const [startGame, setStartGame] = useState(false);
+    //const [master, setMaster] = useState('');
 
     var name = localStorage.getItem("username");
     var room = localStorage.getItem("roomId");    
     var playerCounter = 0;
     const words = ["Car", "Tree", "Gladiator", "Phone"];
+
+    var p = [];
 
     // Pridružitev
     useEffect( () => {
@@ -36,8 +39,8 @@ const Room = () => {
         socket.on("roomData", ({ users }) => {
             setUsers(users);
             console.log(`Uporabniki ${users}`);
-            var p = [];
             // Zberemo uporabnika, ki začne, ostale dodamo v seznam
+            p = [];
             var user = users[Math.floor(Math.random() * users.length)];
             p.push(user);
             users.forEach(function (item, index) {
@@ -52,8 +55,22 @@ const Room = () => {
     // Začetek igre
     useEffect( () =>  {
         socket.on("start", ({}) => {
-            console.log("neki")
             setStartGame(true);
+        });
+    },[])
+
+    // Naslednji igralec
+    useEffect( () =>  {
+        socket.on("next", ({}) => {
+            playerTurn();
+        });
+    },[])
+
+    // Konec igre
+    useEffect( () =>  {
+        socket.on("end", ({}) => {
+            setStartGame(false);
+            window.location.reload(false);
         });
     },[])
 
@@ -61,19 +78,24 @@ const Room = () => {
 	useEffect( () => {
 		socket.on("message", ({ name, message }) => {
             var word = localStorage.getItem("word");
+            var m = localStorage.getItem("master");
+            var n = localStorage.getItem("username");
             if(message === word){
                 socket.emit("message", { name: 'admin', message: `${name} guessed the word!` })
                 playerCounter+=1;
-                playerTurn();
+                if(m === n){ // Master skrbi za potek igre
+                    if(playerCounter === p.length){
+                        socket.emit("end", { master: p[0] }); 
+                    } else{
+                        playerTurn();
+                    }
+                }
             }
 		})
 	},[])
 
     const playerTurn = () => {
-        var player = players[playerCounter];
-        console.log(`PLayer counter: ${playerCounter}`);
-        console.log(`players: ${players}`)
-        console.log(`player: ${player}`)
+        var player = p[playerCounter];
         // Izberemo naključno besedo iz nabora
         var word = words[Math.floor(Math.random() * words.length)];
         localStorage.setItem("word", word);
@@ -83,8 +105,15 @@ const Room = () => {
 
     // Potek igre
     const handleStartGame = ()=> {
-        socket.emit("start", { user: players[0]}); 
-        playerTurn();
+        // Tisti, ki je začel igro
+        var masterUser; 
+        users.forEach(function (item, index) {
+            if(item.name === name){
+                masterUser = item;
+            }
+        });
+        localStorage.setItem("master", masterUser.name);
+        socket.emit("start", { master: masterUser }); 
 	};
 
 	return (

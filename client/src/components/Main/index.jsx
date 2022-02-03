@@ -19,6 +19,7 @@ const Main = () => {
 	}
 
 	localStorage.setItem("username", user.firstName);
+	localStorage.setItem("usr", user);
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
