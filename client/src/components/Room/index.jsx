@@ -10,16 +10,14 @@ import styles from "./styles.module.css";
 const Room = () => {
 
     const [users, setUsers] = useState('');
-    const [players, setPlayers] = useState('');
     const [startGame, setStartGame] = useState(false);
-    //const [master, setMaster] = useState('');
 
     var name = localStorage.getItem("username");
     var room = localStorage.getItem("roomId");    
     var playerCounter = 0;
-    const words = ["Car", "Tree", "Gladiator", "Phone"];
 
-    var p = [];
+    var players = [];
+    const words = ["Car", "Tree", "Gladiator", "Phone"];
 
     // Pridružitev
     useEffect( () => {
@@ -40,15 +38,14 @@ const Room = () => {
             setUsers(users);
             console.log(`Uporabniki ${users}`);
             // Zberemo uporabnika, ki začne, ostale dodamo v seznam
-            p = [];
+            players = [];
             var user = users[Math.floor(Math.random() * users.length)];
-            p.push(user);
+            players.push(user);
             users.forEach(function (item, index) {
                 if(item.id !== user.id){
-                    p.push(item);
+                    players.push(item);
                 }
             });
-            setPlayers(p);
         });
     },[])
 
@@ -84,8 +81,8 @@ const Room = () => {
                 socket.emit("message", { name: 'admin', message: `${name} guessed the word!` })
                 playerCounter+=1;
                 if(m === n){ // Master skrbi za potek igre
-                    if(playerCounter === p.length){
-                        socket.emit("end", { master: p[0] }); 
+                    if(playerCounter === players.length){
+                        socket.emit("end", { master: players[0] }); 
                     } else{
                         playerTurn();
                     }
@@ -95,7 +92,7 @@ const Room = () => {
 	},[])
 
     const playerTurn = () => {
-        var player = p[playerCounter];
+        var player = players[playerCounter];
         // Izberemo naključno besedo iz nabora
         var word = words[Math.floor(Math.random() * words.length)];
         localStorage.setItem("word", word);
