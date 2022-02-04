@@ -150,18 +150,22 @@ const Room = () => {
 	}
 
 	return (
-		<div className="outerContainer">
-            <div className="container">
-                <InfoBar room={room} />
-                <Chat socket={socket}/>
-                <TextContainer users={users}/>
+		<div>
+            <InfoBar room={room} />
+            <div>
+                <section className={styles.table}>
+                    <div className={styles.chat_container}>
+                        <Chat socket={socket}/>
+                    </div>
+                    <Canvas socket={socket}/>
+                    <div>
+                        <TextContainer users={users}/>
+                        {users.length >= 2 && users.length < 8 && !startGame? (
+                                <button type="button" className={styles.black_btn} onClick={handleStartGame}>Start Game</button>
+                            ) : ''}
+                    </div>
+                </section>
             </div>
-            {users.length >= 2 && users.length < 8 && !startGame? (
-                <button type="button" className={styles.black_btn} onClick={handleStartGame}>Start Game</button>
-              ) : ''}
-            {startGame ? (
-                <Canvas socket={socket}/>
-              ) : ''}
         </div>
 	);
 };

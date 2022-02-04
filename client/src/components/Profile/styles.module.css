@@ -25,3 +25,32 @@
 	cursor: pointer;
 	margin-right: 20px;
 }
+
+.profile_logo_container {
+	margin-top: 40px;
+	display: flex;
+	justify-content: center;
+}
+  
+.profile_logo_text {
+	margin-top: 40px;
+	text-align: center;
+	font-size: 100px;  
+	color: #fff;
+}
+
+.profile_logo {
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	background: black;
+}
+
+.profile_info {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	justify-items: center;
+	gap: 16px;
+	margin-top: 32px;
+}

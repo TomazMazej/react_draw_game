@@ -67,7 +67,7 @@ const Main = () => {
 	return (
 		<div className={styles.main_container}>
 			<nav className={styles.navbar}>
-				<h1>Draw Game</h1>
+				<h1><a href="/">Draw Game</a></h1>
 				<h1><a href="/profile">{ user.firstName }</a></h1>
 				<button className={styles.white_btn} onClick={handleLogout}>
 					Logout

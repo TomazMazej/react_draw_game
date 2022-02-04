@@ -26,17 +26,29 @@ export const Profile = ( {} ) => {
     return (
         <div>
             <nav className={styles.navbar}>
-				<h1>Draw Game</h1>
-				<h1>{ user.firstName }</h1>
+                <h1><a href="/">Draw Game</a></h1>
 				<button className={styles.white_btn} onClick={handleLogout}>
 					Logout
 				</button>
 			</nav>
-            <h2>Name: {user.firstName} {user.lastName}</h2>
-            <h2>Email: {user.email}</h2>
-            <h2>Games played: {user.gamesPlayed}</h2>
-            <h2>Wins: {user.wins}</h2>
-            <h2>Points: {user.points}</h2>
+            <div className={styles.profile_logo_container}>
+                <div className={styles.profile_logo}>
+                    {user && user.firstName && (
+                    <div className={styles.profile_logo_text}>{user.firstName[0].concat(user.lastName[0])}</div>
+                    )}
+                </div>
+            </div>
+            <section className={styles.profile_info}>
+                <h2>Email</h2>
+                <h2>Games played</h2>
+                <h2>Wins</h2>
+                <h2>Points</h2>
+
+                <p>{user.email}</p>
+                <p>{user.gamesPlayed}</p>
+                <p>{user.wins}</p>
+                <p>{user.points}</p>
+            </section>
         </div>
     )
 }

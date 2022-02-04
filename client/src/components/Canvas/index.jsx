@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./styles.module.css";
-import io from "socket.io-client"
 
 const Canvas = ({socket}) => {
     const [isDrawing, setIsDrawing] = useState(false)
@@ -10,10 +9,10 @@ const Canvas = ({socket}) => {
     useEffect(() => {
         // Nastavitve canvasa
         const canvas = canvasRef.current;
-        canvas.width = window.innerWidth ;
-        canvas.height = window.innerHeight;
-        canvas.style.width = `${window.innerWidth}px`;
-        canvas.style.height = `${window.innerHeight}px`;
+        canvas.width = 800 ;
+        canvas.height = 800;
+        canvas.style.width = `800px`;
+        canvas.style.height = `800px`;
 
         const context = canvas.getContext("2d")
         context.lineCap = "round";
