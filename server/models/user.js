@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema({
 	lastName: { type: String, required: true },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
+	gamesPlayed: { type: Number, default: 0 },
+	wins: { type: Number, default: 0 },
+	points: { type: Number, default: 0 },
 });
 
 // Zeneriramo token

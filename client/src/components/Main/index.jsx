@@ -54,7 +54,7 @@ const Main = () => {
 		setRooms([...rooms, data]);
 		setAddRoomActive(false);
 		setNewRoom("");
-	  }
+	}
 	
 	const deleteRoom = async id => {
 		const data = await fetch("http://localhost:8080/room/delete/" + id, {
@@ -68,7 +68,7 @@ const Main = () => {
 		<div className={styles.main_container}>
 			<nav className={styles.navbar}>
 				<h1>Draw Game</h1>
-				<h1>{ user.firstName }</h1>
+				<h1><a href="/profile">{ user.firstName }</a></h1>
 				<button className={styles.white_btn} onClick={handleLogout}>
 					Logout
 				</button>

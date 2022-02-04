@@ -4,6 +4,7 @@ import Chat from '../Chat'
 import Canvas from '../Canvas'
 import TextContainer from '../TextContainer'
 import { socketID, socket } from '../../socket';
+import song from "../../win.mp3";
 
 import styles from "./styles.module.css";
 
@@ -13,15 +14,17 @@ const Room = () => {
     const [startGame, setStartGame] = useState(false);
 
     var name = localStorage.getItem("username");
-    var room = localStorage.getItem("roomId");    
+    var room = localStorage.getItem("roomId"); 
+    var email = localStorage.getItem("email");    
     var playerCounter = 0;
+    var audio = new Audio(song);
 
     var players = [];
     const words = ["Car", "Tree", "Gladiator", "Phone"];
 
     // Pridružitev
     useEffect( () => {
-        socket.emit('join', {name, room}, (error) => {
+        socket.emit('join', {name, email, room}, (error) => {
             if(error) {
                 alert(error);
             }
@@ -53,6 +56,7 @@ const Room = () => {
     useEffect( () =>  {
         socket.on("start", ({}) => {
             setStartGame(true);
+            incrementGamesPlayed();
         });
     },[])
 
@@ -77,10 +81,12 @@ const Room = () => {
             var word = localStorage.getItem("word");
             var m = localStorage.getItem("master");
             var n = localStorage.getItem("username");
-            if(message === word){
-                socket.emit("message", { name: 'admin', message: `${name} guessed the word!` })
+            if(message === word){                 
+                incrementWins(name);
                 playerCounter+=1;
                 if(m === n){ // Master skrbi za potek igre
+                    audio.play();
+                    socket.emit("message", { name: 'admin', message: `${name} guessed the word!` })
                     if(playerCounter === players.length){
                         socket.emit("end", { master: players[0] }); 
                     } else{
@@ -113,6 +119,36 @@ const Room = () => {
         socket.emit("start", { master: masterUser }); 
 	};
 
+    const incrementGamesPlayed = () => {
+        fetch("http://localhost:8080/incgames/" + email, {
+            method : "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+          }).then(res => res.json());
+	}
+
+    const incrementWins = ( n ) => {
+        fetch("http://localhost:8080/incwins/" + n, {
+            method : "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+          }).then(res => res.json());
+	}
+
+    const incrementPoints = () => {
+        fetch("http://localhost:8080/incgames/" + email, {
+            method : "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+          }).then(res => res.json());
+	}
+
 	return (
 		<div className="outerContainer">
             <div className="container">
@@ -120,7 +156,7 @@ const Room = () => {
                 <Chat socket={socket}/>
                 <TextContainer users={users}/>
             </div>
-            {users.length >= 2 && !startGame? (
+            {users.length >= 2 && users.length < 8 && !startGame? (
                 <button type="button" className={styles.black_btn} onClick={handleStartGame}>Start Game</button>
               ) : ''}
             {startGame ? (

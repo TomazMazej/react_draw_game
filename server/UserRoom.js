@@ -1,7 +1,7 @@
 const users = [];
  
-const addUser = ({id, name, room}) => {
-    const user = {id,name,room};
+const addUser = ({id, name, email, room}) => {
+    const user = {id,name, email, room};
  
     users.push(user);
     return {user};

@@ -18,9 +18,9 @@ io.on('connection', socket => {
     })
 
     // Pridružitev v chat
-    socket.on('join', ({ name, room }, callback) => {
+    socket.on('join', ({ name, email, room }, callback) => {
         const { error, user } = addUser(
-            { id: socket.id, name, room });
+            { id: socket.id, name, email, room });
  
         if (error) return callback(error);
  
@@ -142,6 +142,33 @@ app.delete('/room/delete/:id', async (req, res) => {
     const result = await room.findByIdAndDelete(req.params.id);
 
     res.json(result);
+})
+
+// Povečamo št. igranih iger
+app.put('/incgames/:e', async (req, res) => {
+    const user = await Users.User.findOne({ email: req.params.e });
+
+    user.gamesPlayed = user.gamesPlayed + 1;
+    user.save();
+    res.json(user)
+})
+
+// Povečamo št. zmag
+app.put('/incwins/:n', async (req, res) => {
+    const user = await Users.User.findOne({ firstName: req.params.n });
+
+    user.wins = user.wins + 1;
+    user.save();
+    res.json(user)
+})
+
+// Povečamo št. točk
+app.put('/incpoints/:e', async (req, res) => {
+    const user = await Users.User.findOne({ email: req.params.e });
+
+    user.points = user.points + 1;
+    user.save();
+    res.json(user)
 })
 
 const port = process.env.PORT || 8080;

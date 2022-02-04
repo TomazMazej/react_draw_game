@@ -1,6 +1,11 @@
 import styles from "./styles.module.css";
+import { fadeInLeft, bounce } from 'react-animations'
+import styled, { keyframes } from 'styled-components';
 
 export const Rooms = ( {rooms, onDelete} ) => {
+
+    const fadeInLeftAnimation = keyframes`${fadeInLeft}`;
+    const FadeInDiv = styled.div`animation: 1s ${fadeInLeftAnimation};`;
 
     // Preusmeritev na sobo
     const onClick = (id) => {
@@ -10,15 +15,15 @@ export const Rooms = ( {rooms, onDelete} ) => {
 
     return (
         <div>
-            <h2>Rooms</h2>
+            <h2>Game rooms</h2>
             <div className={styles.todos}>
                 {rooms.map(room => (
-                    <div key={room._id}>
+                    <FadeInDiv key={room._id}>
                         <div className={styles.todo} value={room._id} >
                             <div className={styles.text} onClick={() => onClick(room._id)}>{ room.name }</div>
                             <div className={styles.delete_todo} onClick={() => onDelete(room._id)}>x</div>
                         </div>
-                    </div>
+                    </FadeInDiv>
                 ))}
             </div>
         </div>
