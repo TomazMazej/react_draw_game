@@ -1,7 +1,7 @@
 import React from 'react';
- 
+
 import styles from "./styles.module.css";
- 
+
 const InfoBar = ({ room }) => (
   <div className={styles.infoBar}>
     <div className={styles.leftInnerContainer}>
@@ -12,5 +12,5 @@ const InfoBar = ({ room }) => (
     </div>
   </div>
 );
- 
+
 export default InfoBar;

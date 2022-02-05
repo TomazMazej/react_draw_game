@@ -1,16 +1,17 @@
 import React from 'react';
-   
+import styles from "./styles.module.css";
+
 const TextContainer = ({ users }) => (
-  <div className="textContainer">
+  <div className={styles.chat_form}>
     {
       users
         ? (
           <div>
             <h1>People in room:</h1>
-            <div className="activeContainer">
+            <div >
               <h2>
-                {users.map(({name}) => (
-                  <div key={name} className="activeItem">
+                {users.map(({ name }) => (
+                  <div key={name} className={styles.activeItem}>
                     {name}
                   </div>
                 ))}
@@ -22,5 +23,5 @@ const TextContainer = ({ users }) => (
     }
   </div>
 );
- 
+
 export default TextContainer;

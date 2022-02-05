@@ -1,23 +1,31 @@
-.black_btn{
-	border: none;
-	outline: none;
-	padding: 12px 0;
-	background-color: rgb(0, 0, 0);
-	border-radius: 20px;
-	width: 180px;
-	font-weight: bold;
-	font-size: 14px;
-	cursor: pointer;
+.black_btn {
+    border: none;
+    outline: none;
+    padding: 12px 0;
+    background-color: rgb(0, 0, 0);
+    border-radius: 20px;
+    width: 180px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
     color: white;
 }
 
 .table {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: repeat(1, 1fr);
-	gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    gap: 5px;
 }
 
 .chat_container {
-	min-height: fit-content;
+    min-height: fit-content;
+}
+
+.start_button {
+    padding: 10px;
+    background: black;
+    border-radius: 5px;
+    height: 56px;
+    color: white;
 }

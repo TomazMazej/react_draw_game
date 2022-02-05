@@ -5,31 +5,31 @@
     background: #000000;
     height: 60px;
     width: 100%;
-  }
-   
-  .leftInnerContainer {
+}
+
+.leftInnerContainer {
     flex: 0.5;
     display: flex;
     align-items: center;
     margin-left: 10px;
     color: white;
-  }
-   
-  .rightInnerContainer {
+}
+
+.rightInnerContainer {
     display: flex;
     flex: 0.5;
     justify-content: flex-end;
     margin-right: 50px;
-  }
-   
-  .onlineIcon {
+}
+
+.onlineIcon {
     margin-right: 5%;
-  }
+}
 
-  .a{
+.a {
     color: rgb(255, 255, 255);
-  }
+}
 
-  a:visited {
+a:visited {
     color: white;
-  }
+}

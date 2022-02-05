@@ -9,10 +9,10 @@ const Canvas = ({socket}) => {
     useEffect(() => {
         // Nastavitve canvasa
         const canvas = canvasRef.current;
-        canvas.width = 800 ;
-        canvas.height = 800;
-        canvas.style.width = `800px`;
-        canvas.style.height = `800px`;
+        canvas.width = 820 ;
+        canvas.height = 820;
+        canvas.style.width = `820px`;
+        canvas.style.height = `820px`;
 
         const context = canvas.getContext("2d")
         context.lineCap = "round";
@@ -67,12 +67,12 @@ const Canvas = ({socket}) => {
     return (
         <div>
             <canvas
-            onMouseDown={startDrawing}
-            onMouseUp={finishDrawing}
-            onMouseMove={draw}
-            ref={canvasRef}
+                onMouseDown={startDrawing}
+                onMouseUp={finishDrawing}
+                onMouseMove={draw}
+                ref={canvasRef}
             />
-            <button onClick={clearCanvas} className={styles.black_btn}>Clear</button>
+            <button style={{ alignSelf: 'bottom', width: '100%'}} onClick={clearCanvas} className={styles.black_btn}>Clear</button>
         </div>
     );
 };

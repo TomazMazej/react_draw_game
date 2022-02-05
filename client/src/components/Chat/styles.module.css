@@ -8,14 +8,17 @@
   padding: 20px;
   box-shadow: 0px 3px 24px -8px rgba(0, 0, 0, 0.75);
   min-width: fit-content;
-  min-height: 880px;
+  min-height: 824px;
+  max-height: 824px;
+  overflow-y:auto;
 }
 
 .chat_button {
   padding: 10px;
-  background: transparent;
+  background: black;
   border-radius: 5px;
   height: 56px;
+  color: white;
 }
 
 .render_chat {

@@ -5,29 +5,42 @@
     color: rgb(201, 25, 25);
     height: 60%;
     justify-content: space-between;
-  }
-   
-  .activeContainer {
+}
+
+.activeContainer {
     display: flex;
     align-items: center;
     margin-bottom: 50%;
-  }
-   
-  .activeItem {
+}
+
+.activeItem {
     display: flex;
     align-items: center;
-  }
-   
-  .activeContainer img {
+}
+
+.activeContainer img {
     padding-left: 10px;
-  }
-   
-  .textContainer h1 {
+}
+
+.textContainer h1 {
     margin-bottom: 0px;
-  }
-   
-  @media (min-width: 320px) and (max-width: 1200px) {
+}
+
+@media (min-width: 320px) and (max-width: 1200px) {
     .textContainer {
-      display: none;
+        display: none;
     }
-  }
+}
+
+.card {
+    grid-template-columns: 1fr 1fr;
+    min-width: fit-content;
+}
+
+.chat_form {
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 3px 24px -8px rgba(0, 0, 0, 0.75);
+    min-width: fit-content;
+    min-height: 824px;
+}

@@ -71,7 +71,6 @@ io.on('connection', socket => {
 
     // Konec igre
     socket.on('end', ( { master } ) => {
-        socket.emit("message", { name: 'admin', message: `The game is over!` })
         io.to(master.room).emit('end', {});
   
     })

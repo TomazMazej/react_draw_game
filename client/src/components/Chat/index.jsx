@@ -40,22 +40,20 @@ const Chat = ({socket}) => {
 
 	return (
 		<div className={styles.card}>
-			<form className={styles.chat_form} onSubmit={onMessageSubmit}>
+			<form className={styles.chat_form}>
 				<h1 style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>Chat</h1>
-				{renderChat()}
-				<div>
-					<TextField
-						name="message"
-						onChange={(e) => onTextChange(e)}
-						value={state.message}
-						id="outlined-multiline-static"
-						variant="outlined"
-						label="Message"
-                        style={{ alignSelf: 'bottom'}}
-					/>
-                    <button className={styles.chat_button} type="submit">Send Message</button>
-				</div>
+				{renderChat()}	
 			</form>	
+			<TextField
+				name="message"
+				onChange={(e) => onTextChange(e)}
+				value={state.message}
+				id="outlined-multiline-static"
+				variant="outlined"
+				label="Message"
+                style={{ alignSelf: 'bottom', width: '80%'}}
+			/>
+            <button style={{ alignSelf: 'bottom', width: '20%'}} className={styles.chat_button} onClick={onMessageSubmit}>Send Message</button>
 		</div>
 	)
 };

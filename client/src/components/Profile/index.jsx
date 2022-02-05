@@ -1,40 +1,40 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import styles from "./styles.module.css";
 
-export const Profile = ( {} ) => {
+export const Profile = ({ }) => {
 
     var email = localStorage.getItem("email");
 
     const [user, setUser] = useState('');
 
     useEffect(() => {
-		GetUser();
-	  }, [])
+        GetUser();
+    }, [])
 
     const GetUser = () => {
-		fetch("http://localhost:8080/users/" + email)
-		  .then(res => res.json())
-		  .then(data => setUser(data))
-		  .then(err => console.error("Error: ", err));
-	}
+        fetch("http://localhost:8080/users/" + email)
+            .then(res => res.json())
+            .then(data => setUser(data))
+            .then(err => console.error("Error: ", err));
+    }
 
     const handleLogout = () => {
-		localStorage.removeItem("token");
-		window.location.reload();
-	};
+        localStorage.removeItem("token");
+        window.location.reload();
+    };
 
     return (
         <div>
             <nav className={styles.navbar}>
                 <h1><a href="/">Draw Game</a></h1>
-				<button className={styles.white_btn} onClick={handleLogout}>
-					Logout
-				</button>
-			</nav>
+                <button className={styles.white_btn} onClick={handleLogout}>
+                    Logout
+                </button>
+            </nav>
             <div className={styles.profile_logo_container}>
                 <div className={styles.profile_logo}>
                     {user && user.firstName && (
-                    <div className={styles.profile_logo_text}>{user.firstName[0].concat(user.lastName[0])}</div>
+                        <div className={styles.profile_logo_text}>{user.firstName[0].concat(user.lastName[0])}</div>
                     )}
                 </div>
             </div>
